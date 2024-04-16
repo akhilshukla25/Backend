@@ -1,0 +1,34 @@
+const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin");
+
+module.exports = {
+  mode: 'production',
+  entry: './index.js',
+  output: {
+    path: path.join(__dirname, 'prod-build-optimization'),
+    publicPath:'/',   
+    filename: '[name].js',
+    clean:true
+  },
+//   devtool: 'inline-source-map',
+  target :'node',
+  optimization:{
+    minimize:true,
+    minimizer:[new TerserPlugin({
+        terserOptions:{
+            compress:{
+                drop_console: true
+            }
+        }
+    })]
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader:"babel-loader"
+      }
+    ]
+  }
+};
